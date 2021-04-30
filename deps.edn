@@ -1,5 +1,6 @@
 {:paths ["src" "resources"]
- :deps {org.clojure/clojure {:mvn/version "1.10.3"}}
+ :deps {org.clojure/clojure {:mvn/version "1.10.3"}
+        org.apache.commons/commons-imaging {:mvn/version "1.0-alpha2"}}
  :aliases
  {:run-m {:main-opts ["-m" "uk.me.paulswilliams.stripexif"]}
   :run-x {:ns-default uk.me.paulswilliams.stripexif
