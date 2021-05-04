@@ -1,12 +1,24 @@
 (ns uk.me.paulswilliams.stripexif
+  (:require [clojure.java.shell :refer [sh]])
   (:gen-class))
 
-(defn greet
-  "Callable entry point to the application."
-  [data]
-  (println (str "Hello, " (or (:name data) "World") "!")))
+(defn strip-tags-from-file [path filename]
+  (sh "bash" "-c" (str "$PWD/strip-tags.sh" " " path " '" filename "'")))
+
+(defn strip-tags-from-files [path]
+  (->>
+    (file-seq (clojure.java.io/file path))
+    (filter
+      (fn [n]
+        (and
+          (.isFile n)
+          (re-matches #".*.jpg" (.getName n)))))
+    (map
+      (fn [f]
+        {:filename (.getName f)
+         :result   (strip-tags-from-file path (.getName f))}))))
 
 (defn -main
-  "I don't do a whole lot ... yet."
+  "Orchestrate stripping tags and publishing photos in the specified folder"
   [& args]
-  (greet {:name (first args)}))
+  (println (strip-tags-from-files (first args))))
