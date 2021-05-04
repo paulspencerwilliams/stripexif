@@ -1,71 +1,29 @@
 # stripexif
 
-FIXME: my new application.
+Utility which allows me to strip exif tags before uploading photos to social media
+
+Originally, I'd have liked this script to by JVM based to allow portability, 
+so I endeavoured to use Apache Commons Imaging to strip the tags. However, I 
+discovered and reported [this issue](https://issues.apache.org/jira/browse/IMAGING-299)
+that prevented this approach. I subsequently retreated back to wrapping Exifinfo via Docker. 
 
 ## Installation
 
-Download from https://github.com/uk.me.paulswilliams/stripexif
+Clone from Github
+
+    $ git clone git@github.com:paulspencerwilliams/stripexif.git
+
+Build Docker file
+
+    $  docker build -t exiftool .
 
 ## Usage
 
-FIXME: explanation
-
-Run the project directly, via `:exec-fn`:
-
-    $ clojure -X:run-x
-    Hello, Clojure!
-
-Run the project, overriding the name to be greeted:
-
-    $ clojure -X:run-x :name '"Someone"'
-    Hello, Someone!
-
-Run the project directly, via `:main-opts` (`-m uk.me.paulswilliams.stripexif`):
-
     $ clojure -M:run-m
-    Hello, World!
 
-Run the project, overriding the name to be greeted:
-
-    $ clojure -M:run-m Via-Main
-    Hello, Via-Main!
-
-Run the project's tests (they'll fail until you edit them):
-
-    $ clojure -M:test:runner
-
-Build an uberjar:
-
-    $ clojure -X:uberjar
-
-This will update the generated `pom.xml` file to keep the dependencies synchronized with
-your `deps.edn` file. You can update the version (and SCM tag) information in the `pom.xml` using the
-`:version` argument:
-
-    $ clojure -X:uberjar :version '"1.2.3"'
-
-If you don't want the `pom.xml` file in your project, you can remove it, but you will
-also need to remove `:sync-pom true` from the `deps.edn` file (in the `:exec-args` for `depstar`).
-
-Run that uberjar:
-
-    $ java -jar stripexif.jar
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+To verify change use this command
+    $ docker run -v "$PWD":/tmp exiftool  /tmp/a.jpg /tmp/b.jpg -G1 -w txt
+    $ diff a.txt b.txt
 
 ## License
 
